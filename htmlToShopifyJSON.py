@@ -15,10 +15,21 @@ def html_to_json(html):
         elif element.name == "p":
             children = []
             for child in element.children:
-                if child.name == "i":
+                if child.name == "em":
                     children.append({"type": "text", "value": child.get_text(strip=True), "italic": True})
                 elif child.name == "strong":
                     children.append({"type": "text", "value": child.get_text(strip=True), "bold": True})
+                elif child.name == "a":
+                    if child.has_attr("target"):
+                        if child.has_attr("title"):
+                            children.append({"type": "link", "url": child["href"], "target": child["target"], "title": child["title"], "children": [{"type": "text", "value": child.get_text(strip=True)}]})
+                        else:
+                            children.append({"type": "link", "url": child["href"], "children": [{"type": "text", "value": child.get_text(strip=True)}]})
+                    else:
+                        if child.has_attr("title"):
+                            children.append({"type": "link", "url": child["href"], "title": child["title"], "children": [{"type": "text", "value": child.get_text(strip=True)}]})
+                        else:
+                          children.append({"type": "link", "url": child["href"], "children": [{"type": "text", "value": child.get_text(strip=True)}]})
                 elif child.name is None:
                     children.append({"type": "text", "value": child.strip()})
             return {"type": "paragraph", "children": children}
@@ -39,7 +50,7 @@ def html_to_json(html):
                     children.append({"type": "text", "value": child.get_text(strip=True), "bold": True})
                 elif child.name is None:
                     children.append({"type": "text", "value": child.strip()})
-            return {"type": "listItem", "children": children}
+            return {"type": "list-item", "children": children}
         
         return None
 
