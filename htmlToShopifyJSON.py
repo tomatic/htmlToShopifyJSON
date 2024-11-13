@@ -5,7 +5,7 @@ def html_to_json(html):
     soup = BeautifulSoup(html, "html.parser")
     
     def parse_element(element):
-        if element.name in ["h1", "h2", "h3"]:
+        if element.name in ["h1", "h2", "h3", "h4", "h5", "h6"]:
             return {
                 "type": "heading",
                 "children": [{"type": "text", "value": element.get_text(strip=True)}],
