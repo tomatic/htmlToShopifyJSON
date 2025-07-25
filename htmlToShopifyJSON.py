@@ -39,7 +39,7 @@ def html_to_json(html):
             children = []
             for li in element.find_all("li", recursive=False):
                 children.append(parse_element(li))
-            return {"type": list_type, "children": children}
+            return {"listType": list_type, "type": "list", "children": children}
         
         elif element.name == "li":
             children = []
